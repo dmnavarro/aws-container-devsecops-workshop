@@ -25,7 +25,7 @@ Resources:
       Parameters:
         ResourceName: container-devsecops-wksp
         BucketName: !Ref BucketName
-      TemplateURL: https://raw.githubusercontent.com/dmnavarro/aws-container-devsecops-workshop/master/anchore/anchore-fargate.yml
+      TemplateURL: https://aws101-dams.s3-ap-southeast-1.amazonaws.com/anchore-fargate.yml
 
   InitialPipeline:
     DependsOn: AnchoreStack
