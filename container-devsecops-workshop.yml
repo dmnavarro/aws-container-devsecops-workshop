@@ -25,7 +25,7 @@ Resources:
       Parameters:
         ResourceName: container-devsecops-wksp
         BucketName: !Ref BucketName
-      TemplateURL: !Join [ '/', [ 'https://s3.amazonaws.com', !Ref BucketName, 'devsecops/containers/anchore-fargate.yml'  ] ]
+      TemplateURL: https://raw.githubusercontent.com/dmnavarro/aws-container-devsecops-workshop/master/anchore/anchore-fargate.yml
 
   InitialPipeline:
     DependsOn: AnchoreStack
