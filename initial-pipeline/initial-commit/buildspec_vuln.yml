@@ -5,10 +5,9 @@ phases:
     commands:
       - apt-get update && apt-get install -y python-dev jq
       - docker pull anchore/engine-cli:v0.8.2
-      - curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py  
-      - python get-pip.py
-      - pip install awscli
-      - pip install pyOpenSSL ndg-httpsclient pyasn1
+      - curl https://bootstrap.pypa.io/pip/3.4/get-pip.py -o get-pip.py  
+      - python3 get-pip.py
+      - pip3 install awscli
       - $(aws ecr get-login --no-include-email)
       - ANCHORE_CMD="docker run -e ANCHORE_CLI_URL=$ANCHORE_CLI_URL -e ANCHORE_CLI_USER=$ANCHORE_CLI_USER -e ANCHORE_CLI_PASS=$ANCHORE_CLI_PASS anchore/engine-cli:v0.8.2 anchore-cli"
       - $ANCHORE_CMD registry add $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com awsauto awsauto --registry-type=awsecr || return 0
@@ -23,6 +22,7 @@ phases:
       - $ANCHORE_CMD image wait $IMAGE
       - $ANCHORE_CMD image list
       - $ANCHORE_CMD --json image vuln $IMAGE all > scan_results.json
+      - cat scan_results.json
       - jq -c --arg image $IMAGE --arg arn $IMAGE_ARN '. + {image_id:$image, image_arn:$arn}' scan_results.json >> tmp.json
       - mv tmp.json scan_results.json
       - aws lambda invoke --function-name $FUNCTION_ARN --invocation-type RequestResponse --payload file://scan_results.json outfile
