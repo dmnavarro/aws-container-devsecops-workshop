@@ -3,7 +3,16 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-access_key = "AKIAZELJK6BJF5234HAC"
+import boto3
+
+ssm = boto3.client('ssm', region_name='us-east-2')
+
+response = ssm.get_parameters(
+    Names=['my-access-key'],
+    WithDecryption=True
+)
+
+print(response['Parameters'][0]['Value'])
 
 @app.route("/")
 def hello():

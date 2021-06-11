@@ -1,7 +1,8 @@
-FROM python:latest
+FROM python:3.7-slim-buster
 
-LABEL maintainer="Sasquatch"
+LABEL maintainer="otter"
 
+RUN adduser otter
 COPY . /app
 
 WORKDIR /app
@@ -13,6 +14,6 @@ ENV APACHE_LOG_DIR /var/log/apache2
 
 EXPOSE 5000
 
-USER root
+USER otter
 
 CMD python ./index.py
